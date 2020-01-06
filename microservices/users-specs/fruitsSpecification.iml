@@ -9,6 +9,7 @@
         <webroots />
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../users-specs/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../users-specs/target/generated-sources/swagger" />
           <root url="file://$MODULE_DIR$/../users-specs/target/generated-sources/swagger/src/test/java" />
         </sourceRoots>
       </configuration>
