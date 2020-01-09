@@ -18,7 +18,7 @@ public class SwaggerDocumentationConfig {
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
             .title("Users API")
-            .description("An API to demonstrate Swagger and Spring Boot")
+            .description("An API to handle Users with authentication/authorization")
             .license("")
             .licenseUrl("http://unlicense.org")
             .termsOfServiceUrl("")

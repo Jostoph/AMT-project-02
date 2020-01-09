@@ -71,7 +71,6 @@ public class UsersApiController implements UsersApi {
         return ResponseEntity.ok(usersDTO);
     }
 
-
     private UserEntity toUserEntity(User user) {
         UserEntity entity = new UserEntity();
         entity.setEmail(user.getEmail());

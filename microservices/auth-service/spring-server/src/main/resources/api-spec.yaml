@@ -9,6 +9,27 @@ schemes:
   - http
 
 paths:
+  /connection:
+    post:
+      description: get jwt token
+      operationId: login
+      consumes:
+        - application/json
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Credentials'
+      responses:
+        '200':
+          description: successfuly loged in
+          schema:
+            type: object
+            $ref: '#/definitions/Token'
+        '401':
+          description: unvalid credentials
+
   /users:
     post:
       description: create a user
@@ -91,4 +112,16 @@ definitions:
       firstName:
         type: string
       lastName:
+        type: string
+  Credentials:
+    type: object
+    properties:
+      email:
+        type: string
+      pwHash:
+        type: string
+  Token:
+    type: object
+    properties:
+      token:
         type: string

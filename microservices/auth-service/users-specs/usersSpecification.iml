@@ -9,6 +9,7 @@
         <webroots />
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/swagger" />
           <root url="file://$MODULE_DIR$/target/generated-sources/swagger/src/test/java" />
         </sourceRoots>
       </configuration>
@@ -90,7 +91,6 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.parser.v3:swagger-parser-core:2.0.15" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.parser.v3:swagger-parser-v3:2.0.15" level="project" />
     <orderEntry type="library" name="Maven: com.samskivert:jmustache:1.14" level="project" />
@@ -217,5 +217,8 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.0" level="project" />
     <orderEntry type="library" name="Maven: org.openapitools:jackson-databind-nullable:0.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.8.3" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.12" level="project" />
+    <orderEntry type="library" name="Maven: org.mindrot:jbcrypt:0.4" level="project" />
   </component>
 </module>
