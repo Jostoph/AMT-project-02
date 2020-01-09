@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * Created by Olivier Liechti on 26/07/17.
+ * Class representing a User Entity
  */
 @Entity
 public class UserEntity implements Serializable {

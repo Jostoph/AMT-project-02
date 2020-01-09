@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   version: '0.1.0'
   title: Users API
-  description: An API to demonstrate Swagger and Spring Boot
+  description: An API to hand users with authentication/authorization
 host: localhost:8080
 basePath: /api
 schemes:
@@ -23,9 +23,9 @@ paths:
             $ref: '#/definitions/User'
       responses:
         '201':
-          description: created
-          schema:
-            type: object
+          description: user created successfully
+        '409':
+          description: email already used
     get:
       description: get the list of all users
       operationId: getUsers
@@ -33,28 +33,42 @@ paths:
         - application/json
       responses:
         '200':
-          description: success
+          description: users retrieved successfully
           schema:
             type: array
             items:
-              $ref: '#/definitions/User'
+              $ref: '#/definitions/UserDTO'
 
   /users/{userId}:
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        type: string
     delete:
       description: delete a user
       operationId: deleteUser
-      consumes:
-        - application/json
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          type: string
       responses:
-        '201':
-          description: created
+        '204':
+          description: user deleted successfully
+        '404':
+          description: user not found
+    patch:
+      description: modify the password of a user
+      operationId: changePassword
+      consumes:
+        - text/plain
+      parameters:
+        - in: body
+          name: password
+          required: true
           schema:
-            type: object
+            type: string
+      responses:
+        '204':
+          description: password modified successfully
+        '404':
+          description: user not found
 definitions:
   User:
     type: object
@@ -63,9 +77,18 @@ definitions:
         type: string
       isAdmin:
         type: boolean
-      FirstName:
+      firstName:
         type: string
-      LastName:
+      lastName:
         type: string
-      Password:
+      password:
+        type: string
+  UserDTO:
+    type: object
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
         type: string

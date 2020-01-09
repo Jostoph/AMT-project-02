@@ -1,18 +1,18 @@
 package io.avalia.users.api.endpoints;
 
 import io.avalia.users.api.UsersApi;
+import io.avalia.users.api.model.UserDTO;
 import io.avalia.users.entities.UserEntity;
 import io.avalia.users.api.model.User;
 import io.avalia.users.repositories.UserRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,39 +24,51 @@ public class UsersApiController implements UsersApi {
     @Autowired
     UserRepository userRepository;
 
-    public ResponseEntity<Object> createUser(@ApiParam(value = "", required = true) @Valid @RequestBody User user) {
+    @Override
+    public ResponseEntity<Void> createUser(@ApiParam(value = "", required = true) @Valid @RequestBody User user) {
+        // TODO : add errors and unauthorized
         UserEntity newUserEntity = toUserEntity(user);
+
+        // user already in the database
+        if(userRepository.existsById(newUserEntity.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
         userRepository.save(newUserEntity);
-        String id = newUserEntity.getEmail();
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newUserEntity.getEmail()).toUri();
-
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
-    public ResponseEntity<Object> deleteUser(String userId) {
-        UserEntity  userEntity = userRepository.findById(userId).get();
-        userRepository.delete(userEntity);
-        return ResponseEntity.accepted().build();
-
+    public ResponseEntity<Void> changePassword(String userId, @Valid String password) {
+        // TODO : add unauthorized
+        // TODO : check password length (validity)
+        if(userRepository.existsById(userId)) {
+            userRepository.findById(userId).get().setPassword(password);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = new ArrayList<>();
-        for (UserEntity userEntity : userRepository.findAll()) {
-            users.add(toUser(userEntity));
+    @Override
+    public ResponseEntity<Void> deleteUser(String userId) {
+        // TODO : add unauthorized
+        if(userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        User staticUser = new User();
-        staticUser.setEmail("max@email.com");
-        staticUser.setFirstName("Max");
-        staticUser.setLastName("Banana");
-        staticUser.setPassword(" 68415fd37d5814d98741cdacfbae35eb");
-        users.add(staticUser);
-        return ResponseEntity.ok(users);
+    }
+
+    @Override
+    public ResponseEntity<List<UserDTO>> getUsers() {
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (UserEntity userEntity : userRepository.findAll()) {
+            usersDTO.add(toUserDTO(userEntity));
+        }
+        return ResponseEntity.ok(usersDTO);
     }
 
 
@@ -66,16 +78,16 @@ public class UsersApiController implements UsersApi {
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setPassword(user.getPassword());
+        entity.setAdmin(user.getIsAdmin());
         return entity;
     }
 
-    private User toUser(UserEntity entity) {
-        User user = new User();
-        user.setEmail(entity.getEmail());
-        user.setFirstName(entity.getFirstName());
-        user.setLastName(entity.getLastName());
-        user.setPassword(entity.getPassword());
-        return user;
+    private UserDTO toUserDTO(UserEntity entity) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(entity.getEmail());
+        userDTO.setFirstName(entity.getFirstName());
+        userDTO.setLastName(entity.getLastName());
+        return userDTO;
     }
 
 }
