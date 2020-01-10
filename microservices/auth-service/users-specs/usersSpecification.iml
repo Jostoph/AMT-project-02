@@ -220,5 +220,6 @@
     <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.12" level="project" />
     <orderEntry type="library" name="Maven: org.mindrot:jbcrypt:0.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:8.0.18" level="project" />
   </component>
 </module>

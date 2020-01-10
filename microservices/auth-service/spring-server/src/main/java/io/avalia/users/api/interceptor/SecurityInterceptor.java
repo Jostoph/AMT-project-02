@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    AuthorizationService auth;
+    AuthorizationService authorization;
 
     @Autowired
     UserRepository userRepository;
@@ -24,24 +24,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("In interceptor");
 
-        // TODO remove : used to create a root user
-//        UserEntity admin = new UserEntity();
-//        admin.setEmail("root");
-//        admin.setFirstName("root");
-//        admin.setLastName("root");
-//        admin.setPassword(authentication.hashPassword("root"));
-//        admin.setAdmin(true);
-//        if(!userRepository.existsById("root")) {
-//            userRepository.save(admin);
-//
-//            System.out.println("Adding admin");
-//            System.out.println("password is " + admin.getPassword());
-//        }
-        // -- remove
-
-        AuthInfo info = auth.decodeToken(request.getHeader("Authorization"));
+        AuthInfo info = authorization.decodeToken(request.getHeader("Authorization"));
 
         if(info == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
