@@ -1,0 +1,180 @@
+swagger: '2.0'
+info:
+  version: '0.1.0'
+  title: Shop API
+  description: An API to use a shop
+host: localhost:9090
+basePath: /api
+schemes:
+  - http
+parameters:
+  token:
+    in: header
+    name: Authorization
+    type: string
+    required: true
+
+paths:
+  /products:
+    parameters:
+      - $ref: '#/parameters/token'
+    get:
+      description: get the list of products
+      operationId: getProducts
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: from_page
+          required: false
+          type: integer
+        - in: path
+          name: max_showed
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: products retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        '403':
+          description: forbidden
+    post:
+      description: add a product
+      operationId: addProduct
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          required: true
+          name: product
+          schema:
+            $ref: '#/definitions/ProductDTO'
+      responses:
+        '201':
+          description: product added successfully
+        '403':
+          description: forbidden
+
+  /products/{productId}:
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        type: integer
+      - $ref: '#/parameters/token'
+    get:
+      description: get product by id
+      operationId: getProduct
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: product retrived successfully
+          schema:
+            $ref: '#/definitions/Product'
+        '403':
+          description: forbidden
+        '404':
+          description: product no found
+
+    delete:
+      description: delete a product
+      operationId: deleteProduct
+      responses:
+        '204':
+          description: product deleted successfully
+        '403':
+          description: forbidden
+        '404':
+          description: product not found
+
+  /shop:
+    parameters:
+      - $ref: '#/parameters/token'
+    get:
+      description: get the user's orders
+      operationId: getOrders
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: orders retrived successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+        '403':
+          description: forbidden
+    post:
+      description: make an order
+      operationId: makeOrder
+      parameters:
+        - in: body
+          required: true
+          name: order
+          schema:
+            $ref: '#/definitions/OrderDTO'
+      consumes:
+        - application/json
+      responses:
+        '204':
+          description: order added successfully
+        '403':
+          description: forbidden
+
+    delete:
+      description: delete an order
+      operationId: deleteOrder
+      parameters:
+        - in: path
+          required: true
+          name: orderId
+          type: integer
+      responses:
+        '204':
+          description: order deleted successfully
+        '403':
+          description: forbidden
+        '404':
+          description: order not found
+
+definitions:
+
+  Product:
+    type: object
+    properties:
+      productId:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+
+  ProductDTO:
+    type: object
+    properties:
+      name:
+        type: string
+      price:
+        type: integer
+
+  Order:
+    type: object
+    properties:
+      orderId:
+        type: integer
+      ownerId:
+        type: string
+      products:
+        type: integer
+
+  OrderDTO:
+    type: object
+    properties:
+      ownerId:
+        type: string
+      products:
+        type: integer

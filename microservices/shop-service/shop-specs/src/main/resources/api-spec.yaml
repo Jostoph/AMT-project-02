@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   version: '0.1.0'
-  title: Users API
-  description: An API to hand users with authentication/authorization
+  title: Shop API
+  description: An API to use a shop
 host: localhost:8080
 basePath: /api
 schemes:

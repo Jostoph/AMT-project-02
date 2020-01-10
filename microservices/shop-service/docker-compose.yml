@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mysql:
+    build: ./images/mysql
+    environment:
+     - MYSQL_ROOT_PASSWORD=adminpw
+    ports:
+     - "3307:3306"
+  phpmyadmin:
+    build: ./images/phpmyadmin
+    environment:
+     - MYSQL_ROOT_PASSWORD=adminpw
+    ports:
+     - "7070:80"
+    links:
+     - mysql:db
