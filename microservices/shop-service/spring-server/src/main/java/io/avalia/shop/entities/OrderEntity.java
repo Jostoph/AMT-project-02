@@ -15,7 +15,7 @@ public class OrderEntity implements Serializable {
 
     private String ownerId;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn
     private List<ProductEntity> products;
 

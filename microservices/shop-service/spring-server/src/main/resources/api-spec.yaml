@@ -179,4 +179,6 @@ definitions:
       ownerId:
         type: string
       products:
-        type: integer
+        type: array
+        items:
+          type: integer
