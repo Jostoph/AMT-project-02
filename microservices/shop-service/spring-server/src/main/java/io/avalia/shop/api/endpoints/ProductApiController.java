@@ -48,7 +48,20 @@ public class ProductApiController implements ProductsApi {
 
     @Override
     public ResponseEntity<Void> deleteProduct(Integer productId, String authorization) {
-        return null;
+
+        AuthInfo info = (AuthInfo) request.getAttribute("auth-info");
+
+        if(info.isAdmin()) {
+
+            if(productRepository.existsById(productId)) {
+                productRepository.deleteById(productId);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @Override
