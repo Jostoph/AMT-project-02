@@ -1,10 +1,14 @@
 package io.avalia.shop.api.endpoints;
 
 import io.avalia.shop.business.AuthorizationService;
+import io.avalia.shop.business.models.AuthInfo;
+import io.avalia.shop.entities.ProductEntity;
+import io.avalia.shop.repositories.ProductRepository;
 import io.avalia.users.api.ProductsApi;
 import io.avalia.users.api.model.Product;
 import io.avalia.users.api.model.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -23,9 +27,23 @@ public class ProductApiController implements ProductsApi {
     @Autowired
     HttpServletRequest request;
 
+    @Autowired
+    ProductRepository productRepository;
+
     @Override
     public ResponseEntity<Void> addProduct(String authorization, @Valid ProductDTO product) {
-        return null;
+
+        AuthInfo info = (AuthInfo) request.getAttribute("auth-info");
+
+        if(info.isAdmin()) {
+            ProductEntity entity = toProductEntity(product);
+            productRepository.save(entity);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @Override
@@ -41,5 +59,12 @@ public class ProductApiController implements ProductsApi {
     @Override
     public ResponseEntity<List<Product>> getProducts(String authorization, Integer fromPage, Integer maxShowed) {
         return null;
+    }
+
+    private ProductEntity toProductEntity(ProductDTO productDTO) {
+        ProductEntity entity = new ProductEntity();
+        entity.setName(productDTO.getName());
+        entity.setPrice(productDTO.getPrice());
+        return entity;
     }
 }

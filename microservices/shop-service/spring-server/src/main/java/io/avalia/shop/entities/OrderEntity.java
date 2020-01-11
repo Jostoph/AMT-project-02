@@ -16,7 +16,7 @@ public class OrderEntity implements Serializable {
     private String ownerId;
 
     @OneToMany
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn
     private List<ProductEntity> products;
 
     public int getOrderId() {
