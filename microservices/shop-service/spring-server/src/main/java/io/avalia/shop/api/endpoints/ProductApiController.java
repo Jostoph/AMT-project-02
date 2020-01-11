@@ -66,7 +66,13 @@ public class ProductApiController implements ProductsApi {
 
     @Override
     public ResponseEntity<Product> getProduct(Integer productId, String authorization) {
-        return null;
+
+        if(productRepository.existsById(productId)) {
+            Product product = toProduct(productRepository.findById(productId).get());
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Override
@@ -79,5 +85,13 @@ public class ProductApiController implements ProductsApi {
         entity.setName(productDTO.getName());
         entity.setPrice(productDTO.getPrice());
         return entity;
+    }
+
+    private Product toProduct(ProductEntity entity) {
+        Product product = new Product();
+        product.setProductId(entity.getId());
+        product.setName(entity.getName());
+        product.setPrice(entity.getPrice());
+        return product;
     }
 }
