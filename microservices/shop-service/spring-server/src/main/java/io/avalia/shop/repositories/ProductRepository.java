@@ -1,6 +1,8 @@
 package io.avalia.shop.repositories;
 
 import io.avalia.shop.entities.ProductEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -8,4 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ProductRepository extends CrudRepository<ProductEntity, Integer>{
 
+    Page<ProductEntity> findAll(Pageable pageable);
 }

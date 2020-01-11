@@ -24,12 +24,14 @@ paths:
       produces:
       - application/json
       parameters:
-        - in: path
-          name: from_page
+        - in: query
+          name: page
+          default: 0
           required: false
           type: integer
-        - in: path
-          name: max_showed
+        - in: query
+          name: size
+          default: 10
           required: false
           type: integer
       responses:

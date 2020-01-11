@@ -8,12 +8,15 @@ import io.avalia.users.api.ProductsApi;
 import io.avalia.users.api.model.Product;
 import io.avalia.users.api.model.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-07-26T19:36:34.802Z")
@@ -76,8 +79,13 @@ public class ProductApiController implements ProductsApi {
     }
 
     @Override
-    public ResponseEntity<List<Product>> getProducts(String authorization, Integer fromPage, Integer maxShowed) {
-        return null;
+    public ResponseEntity<List<Product>> getProducts(String authorization, @Valid Integer page, @Valid Integer size) {
+        // TODO : check that size > 0 and send appropriate response
+        Page<ProductEntity> productPage =  productRepository.findAll(PageRequest.of(page, size));
+
+        List<Product> products = productPage.map(e -> toProduct(e)).toList();
+
+        return ResponseEntity.ok(products);
     }
 
     private ProductEntity toProductEntity(ProductDTO productDTO) {
