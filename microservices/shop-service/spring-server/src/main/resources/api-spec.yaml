@@ -140,7 +140,7 @@ paths:
       description: delete an order
       operationId: deleteOrder
       parameters:
-        - in: path
+        - in: query
           required: true
           name: orderId
           type: integer
