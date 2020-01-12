@@ -38,24 +38,62 @@ public class ShopApiController implements ShopApi {
 
     @Override
     public ResponseEntity<Void> deleteOrder(String authorization, Integer orderId) {
-        return null;
+
+        AuthInfo info = (AuthInfo) request.getAttribute("auth-info");
+
+        if(info.isAdmin()) {
+            if(orderRepository.existsById(orderId)) {
+                orderRepository.deleteById(orderId);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @Override
-    public ResponseEntity<List<Order>> getOrders(String authorization) {
-        return null;
+    public ResponseEntity<List<Order>> getOrders(String authorization, String userId) {
+
+        AuthInfo info = (AuthInfo) request.getAttribute("auth-info");
+
+        if(info.isAdmin() || (info.getEmail().equals(userId))) {
+
+            List<OrderEntity> orderEntities = orderRepository.findByOwnerId(userId);
+            List<Order> orders = new ArrayList<>();
+            for (OrderEntity entity : orderEntities) {
+                orders.add(toOrder(entity));
+            }
+
+            return ResponseEntity.ok(orders);
+
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @Override
     public ResponseEntity<Void> makeOrder(String authorization, @Valid OrderDTO order) {
 
-        // TODO check products ?
         AuthInfo info = (AuthInfo) request.getAttribute("auth-info");
 
         if(info.getEmail().equals(order.getOwnerId())) {
-            OrderEntity entity = toOrderEntity(order);
-            orderRepository.save(entity);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+            Iterable<ProductEntity> validProducts = productRepository.findAllById(order.getProducts());
+            List<Integer> productIds = new ArrayList<>();
+            for (ProductEntity pe : validProducts) {
+                productIds.add(pe.getId());
+            }
+
+            // some products are not existing
+            if(order.getProducts().size() != productIds.size()) {
+                return ResponseEntity.badRequest().build();
+            } else {
+                OrderEntity entity = toOrderEntity(order);
+                orderRepository.save(entity);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -71,5 +109,17 @@ public class ShopApiController implements ShopApi {
         }
         entity.setProducts(products);
         return entity;
+    }
+
+    private Order toOrder(OrderEntity entity) {
+        Order order = new Order();
+        order.setOrderId(entity.getOrderId());
+        order.setOwnerId(entity.getOwnerId());
+        List<Integer> productIds = new ArrayList<>();
+        for (ProductEntity pe : entity.getProducts()) {
+            productIds.add(pe.getId());
+        }
+        order.setProducts(productIds);
+        return order;
     }
 }

@@ -41,6 +41,8 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Product'
+        '400':
+          description: unvalid page size
         '403':
           description: forbidden
     post:
@@ -99,6 +101,11 @@ paths:
     get:
       description: get the user's orders
       operationId: getOrders
+      parameters:
+        - in: query
+          required: true
+          name: userId
+          type: string
       produces:
         - application/json
       responses:
@@ -124,6 +131,8 @@ paths:
       responses:
         '204':
           description: order added successfully
+        '400':
+          description: unvalid products
         '403':
           description: forbidden
 
@@ -171,7 +180,9 @@ definitions:
       ownerId:
         type: string
       products:
-        type: integer
+        type: array
+        items:
+          type: integer
 
   OrderDTO:
     type: object

@@ -79,7 +79,11 @@ public class ProductApiController implements ProductsApi {
 
     @Override
     public ResponseEntity<List<Product>> getProducts(String authorization, @Valid Integer page, @Valid Integer size) {
-        // TODO : check that size > 0 and send appropriate response
+
+        if(size < 1) {
+            return ResponseEntity.badRequest().build();
+        }
+
         Page<ProductEntity> productPage =  productRepository.findAll(PageRequest.of(page, size));
 
         List<Product> products = productPage.map(e -> toProduct(e)).toList();
