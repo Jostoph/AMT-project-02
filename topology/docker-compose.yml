@@ -6,25 +6,16 @@ services:
       - MYSQL_ROOT_PASSWORD=adminpw
     ports:
       - "3306:3306"
-  phpmyadmin-auth:
-    build: ../microservices/auth-service/images/phpmyadmin
-    environment:
-      - MYSQL_ROOT_PASSWORD=adminpw
-    ports:
-      - "6060:80"
-    links:
-      - mysql-auth:db
   mysql-shop:
     build: ../microservices/shop-service/images/mysql
     environment:
      - MYSQL_ROOT_PASSWORD=adminpw
     ports:
      - "3307:3306"
-  phpmyadmin-shop:
-    build: ../microservices/shop-service/images/phpmyadmin
+  phpmyadmin:
+    build: ./images/phpmyadmin
     environment:
      - MYSQL_ROOT_PASSWORD=adminpw
+     - PMA_HOSTS=mysql-auth, mysql-shop
     ports:
-     - "7070:80"
-    links:
-      - mysql-shop:db
+     - "6060:80"
