@@ -4,14 +4,28 @@ services:
     build: ../microservices/auth-service/images/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=adminpw
-    ports:
-      - "3306:3306"
   mysql-shop:
     build: ../microservices/shop-service/images/mysql
     environment:
      - MYSQL_ROOT_PASSWORD=adminpw
+  server-auth:
+    build: ../microservices/auth-service/images/alpine-java
+    entrypoint: ["/opt/wait_for_it.sh","mysql-auth:3306","--","java","-jar","/opt/auth-api.jar"]
+    environment:
+      - spring_datasource_url=jdbc:mysql://${mysql-auth:localhost}:3306/userdb
+    depends_on:
+      - mysql-auth
     ports:
-     - "3307:3306"
+      - "8080:8080"
+  server-shop:
+    build: ../microservices/shop-service/images/alpine-java
+    entrypoint: ["/opt/wait_for_it.sh","mysql-shop:3306","--","java","-jar","/opt/shop-api.jar"]
+    environment:
+      - spring_datasource_url=jdbc:mysql://${mysql-shop:localhost}:3306/shopdb
+    depends_on:
+      - mysql-shop
+    ports:
+      - "8081:8080"
   phpmyadmin:
     build: ./images/phpmyadmin
     environment:
