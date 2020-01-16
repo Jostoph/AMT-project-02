@@ -1,5 +1,13 @@
 version: '3'
 services:
+  reverse-proxy:
+    image: traefik:v2.1
+    command: --api.insecure=true --providers.docker=true --providers.docker.exposedbydefault=false --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   mysql-auth:
     build: ../microservices/auth-service/images/mysql
     environment:
@@ -10,24 +18,30 @@ services:
      - MYSQL_ROOT_PASSWORD=adminpw
   server-auth:
     build: ../microservices/auth-service/images/alpine-java
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server-auth.entrypoints=web"
+      - "traefik.http.routers.server-auth.rule=PathPrefix(`/api-auth`)"
+      - "traefik.http.services.server-auth.loadbalancer.server.port=8080"
     entrypoint: ["/opt/wait_for_it.sh","mysql-auth:3306","--","java","-jar","/opt/auth-api.jar"]
     environment:
       - spring_datasource_url=jdbc:mysql://mysql-auth:3306/userdb
       - token_secret=jwtsecret
     depends_on:
       - mysql-auth
-    ports:
-      - "8080:8080"
   server-shop:
     build: ../microservices/shop-service/images/alpine-java
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server-shop.entrypoints=web"
+      - "traefik.http.routers.server-shop.rule=PathPrefix(`/api-shop`)"
+      - "traefik.http.services.server-shop.loadbalancer.server.port=8081"
     entrypoint: ["/opt/wait_for_it.sh","mysql-shop:3306","--","java","-jar","/opt/shop-api.jar"]
     environment:
       - spring_datasource_url=jdbc:mysql://mysql-shop:3306/shopdb
       - token_secret=jwtsecret
     depends_on:
       - mysql-shop
-    ports:
-      - "8081:8081"
   phpmyadmin:
     build: ./images/phpmyadmin
     environment:

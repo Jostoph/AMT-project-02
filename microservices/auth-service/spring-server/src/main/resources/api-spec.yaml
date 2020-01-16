@@ -4,7 +4,7 @@ info:
   title: Users API
   description: An API to hand users with authentication/authorization
 host: localhost:8080
-basePath: /api
+basePath: /api-auth
 schemes:
   - http
 parameters:

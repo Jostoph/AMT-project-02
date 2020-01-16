@@ -4,7 +4,7 @@ info:
   title: Shop API
   description: An API to use a shop
 host: localhost:8081
-basePath: /api
+basePath: /api-shop
 schemes:
   - http
 parameters:
