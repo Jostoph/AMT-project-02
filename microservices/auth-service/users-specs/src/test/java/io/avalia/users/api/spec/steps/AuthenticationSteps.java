@@ -17,13 +17,6 @@ public class AuthenticationSteps {
     private Environment environment;
     private DefaultApi api;
 
-    private Credentials credentials;
-
-    private ApiResponse lastApiResponse;
-    private ApiException lastApiException;
-    private boolean lastApiCallThrewException;
-    private int lastStatusCode;
-
     public AuthenticationSteps(Environment environment) {
         this.environment = environment;
         this.api = environment.getApi();
@@ -36,28 +29,29 @@ public class AuthenticationSteps {
 
     @Given("^I have a credentials payload$")
     public void i_have_a_credentials_payload() throws Throwable {
-       credentials = new Credentials();
-       credentials.setEmail("root@mail.com");
-       credentials.setPassword("root");
+        Credentials credentials = new Credentials();
+        credentials.setEmail("root@mail.com");
+        credentials.setPassword("root");
+        environment.setCredentials(credentials);
     }
 
     @When("^I POST it to the /connection endpoint$")
     public void i_POST_it_to_the_connection_endpoint() throws Throwable {
         try {
-            lastApiResponse = api.loginWithHttpInfo(credentials);
-            lastApiCallThrewException = false;
-            lastApiException = null;
-            lastStatusCode = lastApiResponse.getStatusCode();
+            environment.setLastApiResponse(api.loginWithHttpInfo(environment.getCredentials()));
+            environment.setLastApiCallThrewException(true);
+            environment.setLastApiException(null);
+            environment.setLastStatusCode(environment.getLastApiResponse().getStatusCode());
         } catch (ApiException e) {
-            lastApiCallThrewException = true;
-            lastApiResponse = null;
-            lastApiException = e;
-            lastStatusCode = lastApiException.getCode();
+            environment.setLastApiCallThrewException(true);
+            environment.setLastApiResponse(null);
+            environment.setLastApiException(e);
+            environment.setLastStatusCode(environment.getLastApiException().getCode());
         }
     }
 
     @Then("^I receive a (\\d+) status code$")
     public void i_receive_a_status_code(int statusCode) throws Throwable {
-        assertEquals(statusCode, lastStatusCode);
+        assertEquals(statusCode, environment.getLastStatusCode());
     }
 }
