@@ -1,34 +1,30 @@
 package io.avalia.users.api.spec.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.avalia.users.ApiException;
 import io.avalia.users.ApiResponse;
 import io.avalia.users.api.DefaultApi;
-import io.avalia.users.api.dto.User;
+import io.avalia.users.api.dto.Credentials;
 import io.avalia.users.api.spec.helpers.Environment;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by Olivier Liechti on 27/07/17.
- */
-public class CreationSteps {
+public class AuthenticationSteps {
 
     private Environment environment;
     private DefaultApi api;
 
-    User user;
+    private Credentials credentials;
 
     private ApiResponse lastApiResponse;
     private ApiException lastApiException;
     private boolean lastApiCallThrewException;
     private int lastStatusCode;
 
-    public CreationSteps(Environment environment) {
+    public AuthenticationSteps(Environment environment) {
         this.environment = environment;
         this.api = environment.getApi();
     }
@@ -38,17 +34,17 @@ public class CreationSteps {
         assertNotNull(api);
     }
 
-    @Given("^I have a user payload$")
-    public void i_have_a_user_payload() throws Throwable {
-        user = new io.avalia.users.api.dto.User();
-        // ???
+    @Given("^I have a credentials payload$")
+    public void i_have_a_credentials_payload() throws Throwable {
+       credentials = new Credentials();
+       credentials.setEmail("root@mail.com");
+       credentials.setPassword("root");
     }
 
-    @When("^I POST it to the /users endpoint$")
-    public void i_POST_it_to_the_users_endpoint() throws Throwable {
-        /*
+    @When("^I POST it to the /connection endpoint$")
+    public void i_POST_it_to_the_connection_endpoint() throws Throwable {
         try {
-            lastApiResponse = api.createUserWithHttpInfo(user);
+            lastApiResponse = api.loginWithHttpInfo(credentials);
             lastApiCallThrewException = false;
             lastApiException = null;
             lastStatusCode = lastApiResponse.getStatusCode();
@@ -58,13 +54,10 @@ public class CreationSteps {
             lastApiException = e;
             lastStatusCode = lastApiException.getCode();
         }
-        */
-
     }
 
     @Then("^I receive a (\\d+) status code$")
-    public void i_receive_a_status_code(int arg1) throws Throwable {
-        assertEquals(201, lastStatusCode);
+    public void i_receive_a_status_code(int statusCode) throws Throwable {
+        assertEquals(statusCode, lastStatusCode);
     }
-
 }
