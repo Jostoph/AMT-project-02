@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.server-auth.entrypoints=web"
       - "traefik.http.routers.server-auth.rule=PathPrefix(`/api-auth`)"
       - "traefik.http.services.server-auth.loadbalancer.server.port=8080"
-    entrypoint: ["/opt/wait_for_it.sh","mysql-auth:3306","--","java","-jar","/opt/auth-api.jar"]
+    entrypoint: ["/opt/wait_for_it.sh","mysql-auth:3306","-t" ,"0","--","java","-jar","/opt/auth-api.jar"]
     environment:
       - spring_datasource_url=jdbc:mysql://mysql-auth:3306/userdb
       - token_secret=jwtsecret
@@ -36,7 +36,7 @@ services:
       - "traefik.http.routers.server-shop.entrypoints=web"
       - "traefik.http.routers.server-shop.rule=PathPrefix(`/api-shop`)"
       - "traefik.http.services.server-shop.loadbalancer.server.port=8081"
-    entrypoint: ["/opt/wait_for_it.sh","mysql-shop:3306","--","java","-jar","/opt/shop-api.jar"]
+    entrypoint: ["/opt/wait_for_it.sh","mysql-shop:3306","-t" ,"0","--","java","-jar","/opt/shop-api.jar"]
     environment:
       - spring_datasource_url=jdbc:mysql://mysql-shop:3306/shopdb
       - token_secret=jwtsecret

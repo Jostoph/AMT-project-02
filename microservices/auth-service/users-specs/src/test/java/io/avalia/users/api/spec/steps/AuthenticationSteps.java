@@ -39,7 +39,7 @@ public class AuthenticationSteps {
     public void i_POST_it_to_the_connection_endpoint() throws Throwable {
         try {
             environment.setLastApiResponse(api.loginWithHttpInfo(environment.getCredentials()));
-            environment.setLastApiCallThrewException(true);
+            environment.setLastApiCallThrewException(false);
             environment.setLastApiException(null);
             environment.setLastStatusCode(environment.getLastApiResponse().getStatusCode());
         } catch (ApiException e) {
