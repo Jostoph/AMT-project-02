@@ -7,6 +7,7 @@ import io.avalia.users.ApiException;
 import io.avalia.users.ApiResponse;
 import io.avalia.users.api.DefaultApi;
 import io.avalia.users.api.dto.Credentials;
+import io.avalia.users.api.dto.Token;
 import io.avalia.users.api.spec.helpers.Environment;
 
 import static org.junit.Assert.assertEquals;
@@ -22,13 +23,14 @@ public class AuthenticationSteps {
         this.api = environment.getApi();
     }
 
+
     @Given("^there is a Users server$")
     public void there_is_a_Users_server() throws Throwable {
         assertNotNull(api);
     }
 
-    @Given("^I have a credentials payload$")
-    public void i_have_a_credentials_payload() throws Throwable {
+    @Given("^I have an admin credentials payload$")
+    public void i_have_an_admin_credentials_payload() throws Throwable {
         Credentials credentials = new Credentials();
         credentials.setEmail("root@mail.com");
         credentials.setPassword("root");
@@ -54,4 +56,11 @@ public class AuthenticationSteps {
     public void i_receive_a_status_code(int statusCode) throws Throwable {
         assertEquals(statusCode, environment.getLastStatusCode());
     }
+
+    @Then("^I receive a token$")
+    public void i_receive_a_token() {
+      Token token = (Token) environment.getLastApiResponse().getData();
+      assertNotNull(token);
+    }
+
 }

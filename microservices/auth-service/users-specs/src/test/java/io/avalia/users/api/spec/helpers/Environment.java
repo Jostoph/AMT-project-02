@@ -1,5 +1,6 @@
 package io.avalia.users.api.spec.helpers;
 
+import cucumber.api.java.en.Given;
 import io.avalia.users.ApiException;
 import io.avalia.users.ApiResponse;
 import io.avalia.users.api.DefaultApi;
@@ -7,6 +8,8 @@ import io.avalia.users.api.dto.Credentials;
 
 import java.io.IOException;
 import java.util.Properties;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Olivier Liechti on 24/06/17.
@@ -73,4 +76,6 @@ public class Environment {
     public Credentials getCredentials() {
         return credentials;
     }
+
+
 }
