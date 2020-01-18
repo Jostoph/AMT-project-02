@@ -40,15 +40,20 @@ public class CreationSteps {
 
     @Given("^I have a user payload$")
     public void i_have_a_user_payload() throws Throwable {
-        user = new io.avalia.users.api.dto.User();
-        // ???
+        user = new User();
+
+        user.setEmail("user.mail@test.com");
+        user.setLastName("user");
+        user.setFirstName("firstName");
+        user.setPassword("password");
+        user.setIsAdmin(false);
+
     }
 
     @When("^I POST it to the /users endpoint$")
     public void i_POST_it_to_the_users_endpoint() throws Throwable {
-        /*
         try {
-            lastApiResponse = api.createUserWithHttpInfo(user);
+            lastApiResponse = api.createUserWithHttpInfo("$2a$10$7qwTDPxatoPrwOseLhSwIugi75PObi8hZQtIG/wjE5CMSLyhxUoEu",user);
             lastApiCallThrewException = false;
             lastApiException = null;
             lastStatusCode = lastApiResponse.getStatusCode();
@@ -58,13 +63,14 @@ public class CreationSteps {
             lastApiException = e;
             lastStatusCode = lastApiException.getCode();
         }
-        */
+
 
     }
 
     @Then("^I receive a (\\d+) status code$")
     public void i_receive_a_status_code(int arg1) throws Throwable {
-        assertEquals(201, lastStatusCode);
+        //todo
+        assertEquals(201, lastApiResponse.getStatusCode());
     }
 
 }
