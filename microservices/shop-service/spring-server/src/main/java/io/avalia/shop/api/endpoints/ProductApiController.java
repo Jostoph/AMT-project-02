@@ -80,7 +80,7 @@ public class ProductApiController implements ProductsApi {
     @Override
     public ResponseEntity<List<Product>> getProducts(String authorization, @Valid Integer page, @Valid Integer size) {
 
-        if(size < 1) {
+        if(size < 1 || page < 0) {
             return ResponseEntity.badRequest().build();
         }
 

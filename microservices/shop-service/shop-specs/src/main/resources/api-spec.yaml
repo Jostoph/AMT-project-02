@@ -3,8 +3,8 @@ info:
   version: '0.1.0'
   title: Shop API
   description: An API to use a shop
-host: localhost:8080
-basePath: /api
+host: localhost:8081
+basePath: /api-shop
 schemes:
   - http
 parameters:
@@ -15,134 +15,181 @@ parameters:
     required: true
 
 paths:
-  /connection:
-    post:
-      description: user connection
-      operationId: login
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      parameters:
-        - name: credentials
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Credentials'
-      responses:
-        '200':
-          description: successfuly loged in
-          schema:
-            type: object
-            $ref: '#/definitions/Token'
-        '401':
-          description: unvalid credentials
-        '500':
-          description: token generation failure
-
-  /users:
+  /products:
     parameters:
       - $ref: '#/parameters/token'
-    post:
-      description: create a user
-      operationId: createUser
-      consumes:
-        - application/json
-      parameters:
-        - name: user
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/User'
-      responses:
-        '201':
-          description: user created successfully
-        '409':
-          description: email already used
-        '403':
-          description: forbidden
     get:
-      description: get the list of all users
-      operationId: getUsers
+      description: get the list of products
+      operationId: getProducts
       produces:
-        - application/json
+      - application/json
+      parameters:
+        - in: query
+          name: page
+          default: 0
+          required: false
+          type: integer
+        - in: query
+          name: size
+          default: 10
+          required: false
+          type: integer
       responses:
         '200':
-          description: users retrieved successfully
+          description: products retrieved successfully
           schema:
             type: array
             items:
-              $ref: '#/definitions/UserDTO'
+              $ref: '#/definitions/Product'
+        '400':
+          description: unvalid page size
+        '403':
+          description: forbidden
+    post:
+      description: add a product
+      operationId: addProduct
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          required: true
+          name: product
+          schema:
+            $ref: '#/definitions/ProductDTO'
+      responses:
+        '201':
+          description: product added successfully
         '403':
           description: forbidden
 
-  /users/{userId}:
+  /products/{productId}:
     parameters:
       - in: path
-        name: userId
+        name: productId
         required: true
-        type: string
+        type: integer
       - $ref: '#/parameters/token'
-    delete:
-      description: delete a user
-      operationId: deleteUser
+    get:
+      description: get product by id
+      operationId: getProduct
+      produces:
+        - application/json
       responses:
-        '204':
-          description: user deleted successfully
-        '404':
-          description: user not found
+        '200':
+          description: product retrived successfully
+          schema:
+            $ref: '#/definitions/Product'
         '403':
           description: forbidden
-    patch:
-      description: modify the password of a user
-      operationId: changePassword
-      consumes:
-        - text/plain
+        '404':
+          description: product no found
+
+    delete:
+      description: delete a product
+      operationId: deleteProduct
+      responses:
+        '204':
+          description: product deleted successfully
+        '403':
+          description: forbidden
+        '404':
+          description: product not found
+
+  /shop:
+    parameters:
+      - $ref: '#/parameters/token'
+    get:
+      description: get the user's orders
+      operationId: getOrders
+      parameters:
+        - in: query
+          required: true
+          name: userId
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: orders retrived successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+        '403':
+          description: forbidden
+    post:
+      description: make an order
+      operationId: makeOrder
       parameters:
         - in: body
-          name: password
           required: true
+          name: order
           schema:
-            type: string
+            $ref: '#/definitions/OrderDTO'
+      consumes:
+        - application/json
       responses:
         '204':
-          description: password modified successfully
-        '404':
-          description: user not found
+          description: order added successfully
+        '400':
+          description: unvalid products
         '403':
           description: forbidden
+
+    delete:
+      description: delete an order
+      operationId: deleteOrder
+      parameters:
+        - in: query
+          required: true
+          name: orderId
+          type: integer
+      responses:
+        '204':
+          description: order deleted successfully
+        '403':
+          description: forbidden
+        '404':
+          description: order not found
+
 definitions:
-  User:
+
+  Product:
     type: object
     properties:
-      email:
+      productId:
+        type: integer
+      name:
         type: string
-      isAdmin:
-        type: boolean
-      firstName:
-        type: string
-      lastName:
-        type: string
-      password:
-        type: string
-  UserDTO:
+      price:
+        type: integer
+
+  ProductDTO:
     type: object
     properties:
-      email:
+      name:
         type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-  Credentials:
+      price:
+        type: integer
+
+  Order:
     type: object
     properties:
-      email:
+      orderId:
+        type: integer
+      ownerId:
         type: string
-      password:
-        type: string
-  Token:
+      products:
+        type: array
+        items:
+          type: integer
+
+  OrderDTO:
     type: object
     properties:
-      token:
+      ownerId:
         type: string
+      products:
+        type: array
+        items:
+          type: integer

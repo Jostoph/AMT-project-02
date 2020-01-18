@@ -39,8 +39,6 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<Void> createUser(@ApiParam(value = "" ,required=true) @RequestHeader(value="Authorization", required=true) String authorization,
                                            @ApiParam(value = "" ,required=true )  @Valid @RequestBody User user) {
 
-        // TODO : check if valid email format
-
         AuthInfo authInfo = (AuthInfo) request.getAttribute("auth-info");
 
         // only Admins can create users
@@ -72,7 +70,6 @@ public class UsersApiController implements UsersApi {
 
         // only Admins and owner of account can modify the password
         if(authInfo != null && (authInfo.isAdmin() || authInfo.getEmail().equals(userId))) {
-            // TODO : check password length etc (validity)
             if(userRepository.existsById(userId)) {
                 UserEntity entity = userRepository.findById(userId).get();
                 entity.setPassword(authentication.hashPassword(password));
