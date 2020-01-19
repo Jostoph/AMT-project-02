@@ -3,7 +3,8 @@ package io.avalia.shop.api.spec.helpers;
 import io.avalia.shop.ApiException;
 import io.avalia.shop.ApiResponse;
 import io.avalia.shop.api.DefaultApi;
-import jdk.nashorn.internal.parser.Token;
+import io.avalia.shop.api.dto.Product;
+import io.avalia.shop.api.dto.ProductDTO;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -22,6 +23,7 @@ public class Environment {
     private int lastStatusCode;
 
     private String token;
+    private ProductDTO product;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -73,5 +75,13 @@ public class Environment {
 
     public ApiResponse getLastApiResponse() {
         return lastApiResponse;
+    }
+
+    public void setProduct(ProductDTO product) {
+        this.product = product;
+    }
+
+    public ProductDTO getProduct() {
+        return product;
     }
 }
