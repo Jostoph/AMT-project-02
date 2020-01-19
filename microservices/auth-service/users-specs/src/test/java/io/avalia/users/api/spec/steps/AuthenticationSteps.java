@@ -60,7 +60,33 @@ public class AuthenticationSteps {
     @Then("^I receive a token$")
     public void i_receive_a_token() {
       Token token = (Token) environment.getLastApiResponse().getData();
+      environment.setToken(token);
       assertNotNull(token);
+      assertNotNull(token.getToken());
+    }
+
+    @Given("^I have an admin credentials payload with wrong password$")
+    public void i_have_an_admin_credentials_payload_with_wrong_password() throws Throwable {
+        Credentials credentials = new Credentials();
+        credentials.setEmail("root@mail.com");
+        credentials.setPassword("wrong");
+        environment.setCredentials(credentials);
+    }
+
+    @Given("^I have a user credentials payload with wrong id$")
+    public void i_have_a_user_credentials_payload_with_wrong_id() throws Throwable {
+        Credentials credentials = new Credentials();
+        credentials.setEmail("wrong@mail.com");
+        credentials.setPassword("root");
+        environment.setCredentials(credentials);
+    }
+
+    @Given("^I have a standard user credentials payload$")
+    public void i_have_a_standard_user_credentials_payload() throws Throwable {
+        Credentials credentials = new Credentials();
+        credentials.setEmail("alice@mail.com");
+        credentials.setPassword("1234");
+        environment.setCredentials(credentials);
     }
 
 }

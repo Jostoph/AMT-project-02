@@ -5,6 +5,8 @@ import io.avalia.users.ApiException;
 import io.avalia.users.ApiResponse;
 import io.avalia.users.api.DefaultApi;
 import io.avalia.users.api.dto.Credentials;
+import io.avalia.users.api.dto.Token;
+import io.avalia.users.api.dto.User;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -24,6 +26,8 @@ public class Environment {
     private int lastStatusCode;
 
     private Credentials credentials;
+    private Token token;
+    private User user;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -57,6 +61,14 @@ public class Environment {
         this.credentials = credentials;
     }
 
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public ApiResponse getLastApiResponse() {
         return lastApiResponse;
     }
@@ -77,5 +89,11 @@ public class Environment {
         return credentials;
     }
 
+    public Token getToken() {
+        return token;
+    }
 
+    public User getUser() {
+        return user;
+    }
 }
