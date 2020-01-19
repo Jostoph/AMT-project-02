@@ -11,7 +11,7 @@ Feature: deletion of products
 
   Scenario: deletion of not found product
     Given I have a valid token
-    ## invalid id 
+    ## invalid id
     When I DELETE it to the /products endpoint with 0 id
     Then I receive a 404 status code
 

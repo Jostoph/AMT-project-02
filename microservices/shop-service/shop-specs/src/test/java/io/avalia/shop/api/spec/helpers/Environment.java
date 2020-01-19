@@ -3,6 +3,7 @@ package io.avalia.shop.api.spec.helpers;
 import io.avalia.shop.ApiException;
 import io.avalia.shop.ApiResponse;
 import io.avalia.shop.api.DefaultApi;
+import io.avalia.shop.api.dto.OrderDTO;
 import io.avalia.shop.api.dto.Product;
 import io.avalia.shop.api.dto.ProductDTO;
 
@@ -24,6 +25,7 @@ public class Environment {
 
     private String token;
     private ProductDTO product;
+    private OrderDTO orderDTO;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -83,5 +85,13 @@ public class Environment {
 
     public ProductDTO getProduct() {
         return product;
+    }
+
+    public OrderDTO getOrderDTO() {
+        return orderDTO;
+    }
+
+    public void setOrderDTO(OrderDTO orderDTO) {
+        this.orderDTO = orderDTO;
     }
 }
