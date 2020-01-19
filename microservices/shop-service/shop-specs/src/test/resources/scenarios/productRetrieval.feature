@@ -11,7 +11,7 @@ Feature: Retrieval of products
 
   Scenario: unauthorized retrieval of products cause of invalid pages
     Given I have a valid token
-    When  I GET it to the /products endpoint with 0 pages and 3 size
+    When  I GET it to the /products endpoint with negative 2 pages and 3 size
     Then I receive a 400 status code
 
   Scenario: unauthorized retrieval of products cause of invalid  size
@@ -21,5 +21,5 @@ Feature: Retrieval of products
 
   Scenario: unauthorized retrieval of products cause of invalid token
     Given I have an invalid token
-    When I GET it to the /products endpoint
+    When  I GET it to the /products endpoint with 2 pages and 3 size
     Then I receive a 403 status code

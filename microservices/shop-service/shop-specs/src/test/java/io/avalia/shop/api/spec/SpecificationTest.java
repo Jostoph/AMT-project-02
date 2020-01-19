@@ -1,4 +1,4 @@
-package io.avalia.users.api.spec;
+package io.avalia.shop.api.spec;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
