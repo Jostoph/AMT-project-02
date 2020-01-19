@@ -7,8 +7,10 @@ import io.avalia.users.api.DefaultApi;
 import io.avalia.users.api.dto.Credentials;
 import io.avalia.users.api.dto.Token;
 import io.avalia.users.api.dto.User;
+import io.avalia.users.api.dto.UserDTO;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
@@ -28,6 +30,8 @@ public class Environment {
     private Credentials credentials;
     private Token token;
     private User user;
+    private List<UserDTO> users;
+    private String password;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -69,6 +73,14 @@ public class Environment {
         this.user = user;
     }
 
+    public void setUsers(List<UserDTO> users) {
+        this.users = users;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public ApiResponse getLastApiResponse() {
         return lastApiResponse;
     }
@@ -95,5 +107,13 @@ public class Environment {
 
     public User getUser() {
         return user;
+    }
+
+    public List<UserDTO> getUsers() {
+        return users;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

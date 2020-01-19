@@ -89,4 +89,12 @@ public class AuthenticationSteps {
         environment.setCredentials(credentials);
     }
 
+    @Given("^I have dave credentials payload$")
+    public void i_have_dave_credentials_payload() throws Throwable {
+        Credentials credentials = new Credentials();
+        credentials.setEmail("dave@mail.com");
+        credentials.setPassword("1234");
+        environment.setCredentials(credentials);
+    }
+
 }
