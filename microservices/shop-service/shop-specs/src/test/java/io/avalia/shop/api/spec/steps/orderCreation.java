@@ -22,7 +22,6 @@ public class orderCreation {
     }
 
 
-
     @Given("^I have a order credential$")
     public void iHaveAOrderCredential() {
         OrderDTO orderDTO = new OrderDTO();
@@ -46,8 +45,6 @@ public class orderCreation {
             environment.setLastApiException(e);
             environment.setLastStatusCode(environment.getLastApiException().getCode());
         }
-
-
     }
 
     @Given("^I have a invalid order credential$")
