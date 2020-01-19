@@ -1,6 +1,7 @@
 package io.avalia.shop.api.spec.helpers;
 
 import io.avalia.users.api.DefaultApi;
+import jdk.nashorn.internal.parser.Token;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -11,6 +12,7 @@ import java.util.Properties;
 public class Environment {
 
     private DefaultApi api = new DefaultApi();
+    private Token token;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -18,6 +20,14 @@ public class Environment {
         String url = properties.getProperty("io.avalia.fruits.server.url");
         api.getApiClient().setBasePath(url);
 
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public Token getToken() {
+        return token;
     }
 
     public DefaultApi getApi() {
