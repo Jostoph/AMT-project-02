@@ -1,6 +1,5 @@
 package io.avalia.shop.api.spec.steps;
 
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.avalia.shop.ApiException;
