@@ -7,7 +7,7 @@ Feature: Retrieval of products
     Given I have a valid token
     When I GET it to the /products endpoint with 2 pages and 3 size
     Then I receive a 200 status code
-    Then I receive a array list
+    Then I receive an array list
 
   Scenario: unauthorized retrieval of products cause of invalid pages
     Given I have a valid token

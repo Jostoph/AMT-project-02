@@ -55,12 +55,12 @@ public class productRetrieval {
 
 
     @Then("^I receive a (\\d+) status code$")
-    public void iReceiveAStatusCode(int statusCode) {
+    public void i_receive_a_statusCode(int statusCode) {
         assertEquals(statusCode, environment.getLastStatusCode());
     }
 
-    @Then("^I receive a array list$")
-    public void iReceiveAArrayList() {
+    @Then("^I receive an array list$")
+    public void i_receive_an_ArrayList() {
         System.out.println(environment.getLastApiResponse().getData());
         ArrayList products = (ArrayList) environment.getLastApiResponse().getData();
         assertNotNull(products);
@@ -68,13 +68,13 @@ public class productRetrieval {
 
 
     @Given("^I have an invalid token$")
-    public void iHaveAnInvalidToken() {
+    public void i_have_an_invalid_token() {
         environment.setToken("Bearer NOTGOODTOKENQiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlzQWRtaW4iOnRydWUsImVtYWlsIjoicm9vdEBtYWlsLmNvbSJ9.fNQboD7-48jCNz2ZDjdhAut7VWO9KK26sU4jH-14cj0");
     }
 
 
     @When("^I GET it to the /products endpoint with negative (\\d+) pages and (\\d+) size$")
-    public void iGETItToTheProductsEndpointWithNegativePagesAndSize(int pages, int size) {
+    public void i_GET_it_to_the_products_endpoint_with_negative_Pages_And_Size(int pages, int size) {
         i_GET_it_to_the_products_endpoint_with_pages_and_size(-pages, size);
     }
 }
