@@ -6,7 +6,7 @@ Feature: deletion of products
   Scenario: successful deletion of product
     Given I have a valid token
     Given I create a product and POST it to /products
-    When I DELETE it to the /products endpoint with 1 id
+    When I DELETE it to the /products endpoint with 2 id
     Then I receive a 204 status code
 
   Scenario: deletion of not found product
