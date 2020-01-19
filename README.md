@@ -69,6 +69,7 @@ Our application is a modified version of **The Black Market** from [AMT-Project-
 ## Pre-requisites
 
 - [docker & docker-compose](https://www.docker.com/get-started)
+- [maven](https://maven.apache.org/)
 
 ## Installation
 
@@ -158,3 +159,5 @@ When you are done testing the **APP** (manually or with the tests) it is recomme
 To verify the jwt tokens we use an **Interceptor** class that will get a first look at the requests and verify if the token is valid, if it is the case it will be forwarded to the controllers. 
 
 ## JMeter results
+
+Sadly we couln't make the JMeter tests in time, but our assuption about the loading tests would be that this servers (in opposition with the server from the first project) can handle a lot more connections since they are not using sessions. The Servers won't get overloaded with user sessions so we should be able to serve a lot more of them than before.
