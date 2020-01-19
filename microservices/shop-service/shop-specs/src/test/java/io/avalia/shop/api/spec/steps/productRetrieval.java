@@ -4,7 +4,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.avalia.shop.api.spec.helpers.Environment;
-import io.avalia.users.api.DefaultApi;
+import io.avalia.shop.api.DefaultApi;
 import jdk.nashorn.internal.parser.Token;
 
 import static org.junit.Assert.assertNotNull;
@@ -27,11 +27,23 @@ public class productRetrieval {
     @Given("^I have a valid token$")
     public void iHaveAValidToken() {
     //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlzQWRtaW4iOnRydWUsImVtYWlsIjoicm9vdEBtYWlsLmNvbSJ9.fNQboD7-48jCNz2ZDjdhAut7VWO9KK26sU4jH-14cj0
-        Token token = new T
+        String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlzQWRtaW4iOnRydWUsImVtYWlsIjoicm9vdEBtYWlsLmNvbSJ9.fNQboD7-48jCNz2ZDjdhAut7VWO9KK26sU4jH-14cj0";
+        environment.setToken(token);
     }
 
     @When("^I POST it to the /products endpoint$")
     public void iPOSTItToTheProductsEndpoint() {
+//        try {
+//            environment.setLastApiResponse(api.loginWithHttpInfo(environment.getCredentials()));
+//            environment.setLastApiCallThrewException(false);
+//            environment.setLastApiException(null);
+//            environment.setLastStatusCode(environment.getLastApiResponse().getStatusCode());
+//        } catch (ApiException e) {
+//            environment.setLastApiCallThrewException(true);
+//            environment.setLastApiResponse(null);
+//            environment.setLastApiException(e);
+//            environment.setLastStatusCode(environment.getLastApiException().getCode());
+//        }
     }
 
     @Then("^I receive a (\\d+) status code$")

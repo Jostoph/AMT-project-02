@@ -1,6 +1,8 @@
 package io.avalia.shop.api.spec.helpers;
 
-import io.avalia.users.api.DefaultApi;
+import io.avalia.shop.ApiException;
+import io.avalia.shop.ApiResponse;
+import io.avalia.shop.api.DefaultApi;
 import jdk.nashorn.internal.parser.Token;
 
 import java.io.IOException;
@@ -12,7 +14,11 @@ import java.util.Properties;
 public class Environment {
 
     private DefaultApi api = new DefaultApi();
-    private Token token;
+
+    private ApiResponse lastApiResponse;
+    private ApiException lastApiException;
+
+    private String token;
 
     public Environment() throws IOException {
         Properties properties = new Properties();
@@ -22,11 +28,11 @@ public class Environment {
 
     }
 
-    public void setToken(Token token) {
+    public void setToken(String token) {
         this.token = token;
     }
 
-    public Token getToken() {
+    public String getToken() {
         return token;
     }
 
