@@ -1,5 +1,6 @@
 package io.avalia.shop.api.spec.steps;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.avalia.shop.ApiException;
@@ -7,33 +8,24 @@ import io.avalia.shop.api.DefaultApi;
 import io.avalia.shop.api.dto.ProductDTO;
 import io.avalia.shop.api.spec.helpers.Environment;
 
-public class productCreation {
+import static org.junit.Assert.*;
+
+public class productDeletion {
 
     private Environment environment;
     private DefaultApi api;
 
-    public productCreation(Environment environment) {
+    public productDeletion(Environment environment) {
         this.environment = environment;
         this.api = environment.getApi();
     }
 
-
-    @Given("^I have a valid admin token$")
-    public void i_have_a_valid_adminToken() {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRoMCIsImlzQWRtaW4iOnRydWUsImVtYWlsIjoicm9vdEBtYWlsLmNvbSJ9.fNQboD7-48jCNz2ZDjdhAut7VWO9KK26sU4jH-14cj0";
-        environment.setToken(token);
-    }
-
-    @Given("^I have a product credential$")
-    public void i_have_a_product_credential() {
+    @Given("^I create a product and POST it to /products$")
+    public void i_create_a_product_and_POST_it_to_products() {
         ProductDTO product = new ProductDTO();
         product.setName("Product");
         product.setPrice(32);
         environment.setProduct(product);
-    }
-
-    @When("^I POST it to the /products$")
-    public void i_POST_it_to_the_products() {
         try {
             environment.setLastApiResponse(api.addProductWithHttpInfo(environment.getToken(), environment.getProduct()));
             environment.setLastApiCallThrewException(false);
@@ -45,6 +37,22 @@ public class productCreation {
             environment.setLastApiException(e);
             environment.setLastStatusCode(environment.getLastApiException().getCode());
         }
+        assertFalse(environment.isLastApiCallThrewException());
+    }
 
+
+    @When("^I DELETE it to the /products endpoint with (\\d+) id$")
+    public void iDELETEItToTheProductsEndpointWithId(int id) {
+        try {
+            environment.setLastApiResponse(api.deleteProductWithHttpInfo(id, environment.getToken()));
+            environment.setLastApiCallThrewException(false);
+            environment.setLastApiException(null);
+            environment.setLastStatusCode(environment.getLastApiResponse().getStatusCode());
+        } catch (ApiException e) {
+            environment.setLastApiCallThrewException(true);
+            environment.setLastApiResponse(null);
+            environment.setLastApiException(e);
+            environment.setLastStatusCode(environment.getLastApiException().getCode());
+        }
     }
 }

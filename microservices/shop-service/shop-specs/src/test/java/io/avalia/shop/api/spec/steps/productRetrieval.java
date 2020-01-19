@@ -61,7 +61,6 @@ public class productRetrieval {
 
     @Then("^I receive an array list$")
     public void i_receive_an_ArrayList() {
-        System.out.println(environment.getLastApiResponse().getData());
         ArrayList products = (ArrayList) environment.getLastApiResponse().getData();
         assertNotNull(products);
     }
