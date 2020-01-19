@@ -18,6 +18,9 @@ public class Environment {
     private ApiResponse lastApiResponse;
     private ApiException lastApiException;
 
+    private boolean lastApiCallThrewException;
+    private int lastStatusCode;
+
     private String token;
 
     public Environment() throws IOException {
@@ -26,6 +29,10 @@ public class Environment {
         String url = properties.getProperty("io.avalia.fruits.server.url");
         api.getApiClient().setBasePath(url);
 
+    }
+
+    public void setLastApiResponse(ApiResponse lastApiResponse) {
+        this.lastApiResponse = lastApiResponse;
     }
 
     public void setToken(String token) {
@@ -40,5 +47,31 @@ public class Environment {
         return api;
     }
 
+    public void setLastApiCallThrewException(boolean lastApiCallThrewException) {
+        this.lastApiCallThrewException = lastApiCallThrewException;
+    }
 
+    public void setLastStatusCode(int lastStatusCode) {
+        this.lastStatusCode = lastStatusCode;
+    }
+
+    public boolean isLastApiCallThrewException() {
+        return lastApiCallThrewException;
+    }
+
+    public ApiException getLastApiException() {
+        return lastApiException;
+    }
+
+    public void setLastApiException(ApiException lastApiException) {
+        this.lastApiException = lastApiException;
+    }
+
+    public int getLastStatusCode() {
+        return lastStatusCode;
+    }
+
+    public ApiResponse getLastApiResponse() {
+        return lastApiResponse;
+    }
 }
